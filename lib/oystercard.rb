@@ -25,7 +25,7 @@ class Oystercard
 
   def touch_in(station)
     raise "A minimum balance of £#{@fare_min} required to travel." if @balance < @fare_min
-    
+
     @entry_station = station
     update_journeys(station)
   end
@@ -45,5 +45,4 @@ class Oystercard
     @journeys << {}
     @journeys.last[:entry_station] = station
   end
-
 end
