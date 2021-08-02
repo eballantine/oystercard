@@ -1,8 +1,15 @@
 require 'oystercard'
 
 describe Oystercard do
-  it 'has an initial balance of £0' do
-    expect(subject.balance).to eq 0
+
+  let(:top_up_50) { subject.top_up(50) }
+  let(:touch_in) { subject.touch_in }
+  let(:touch_out) { subject.touch_out }
+
+  describe '#initialize' do
+    it 'has an initial balance of £0' do
+      expect(subject.balance).to eq 0
+    end
   end
 
   describe '#top_up' do
@@ -19,7 +26,7 @@ describe Oystercard do
 
   describe '#deduct' do 
     it 'reduces balance by correct amount' do
-      subject.top_up(50)
+      top_up_50
       expect(subject.deduct(5)).to eq 45
     end
   end
@@ -30,22 +37,30 @@ describe Oystercard do
     end
 
     it 'returns true when a card is on a journey' do
-      subject.touch_in
+      top_up_50
+      touch_in
       expect(subject.in_journey?).to be true
     end
   end
 
   describe '#touch_in' do
     it 'allows the user to enter barriers' do
-      subject.touch_in
+      top_up_50
+      touch_in
       expect(subject.in_journey?).to be true
-    end  
+    end
+
+    it "should only let customer touch_in if they have the required." do
+      message = "You need a minimum balance of #{subject.balance_min} in order to touch in."
+      expect { touch_in }.to raise_error message
+    end
   end
 
   describe '#touch_out' do
     it 'allows the user to exit barriers' do
-      subject.touch_in
-      subject.touch_out
+      top_up_50
+      touch_in
+      touch_out
       expect(subject.in_journey?).to be false
     end
   end
