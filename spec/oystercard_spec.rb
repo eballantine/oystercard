@@ -5,11 +5,15 @@ describe Oystercard do
   let(:station) { double('station') }
   let(:top_up_50) { subject.top_up(50) }
   let(:touch_in) { subject.touch_in(station) }
-  let(:touch_out) { subject.touch_out }
+  let(:touch_out) { subject.touch_out(station) }
 
   describe '#initialize' do
     it 'has an initial balance of £0' do
       expect(subject.balance).to eq 0
+    end
+
+    it 'new oyster card has no journey history' do
+      expect(subject.journeys).to eq []
     end
   end
 
@@ -60,6 +64,17 @@ describe Oystercard do
       top_up_50
       touch_in
       expect(subject.entry_station).to eq station
+    end
+
+    it 'creates a new journey' do
+      top_up_50
+      expect { touch_in }.to change{subject.journeys.length}.by(1)
+    end
+
+    it 'saves entry station into journey history' do
+      top_up_50
+      touch_in
+      expect(subject.journeys.last.keys.first).to eq subject.entry_station
     end
   end
 

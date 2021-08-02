@@ -10,6 +10,7 @@ class Oystercard
     @card_limit = CARD_LIMIT
     @fare_min = FARE_MIN
     @entry_station
+    @journeys = []
   end
 
   def top_up(amount)
@@ -25,9 +26,12 @@ class Oystercard
   def touch_in(station)
     raise "You need a minimum balance of #{@fare_min} in order to touch in." if @balance < @fare_min
     @entry_station = station
+    @journeys << {}
+    @journeys.last[:entry_station] = ""
+    # unable to get the last journey key to match the station double value
   end
 
-  def touch_out
+  def touch_out(station)
     @entry_station = nil
     deduct(fare_min)
   end
