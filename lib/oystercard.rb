@@ -27,7 +27,8 @@ class Oystercard
     raise "You need a minimum balance of #{@fare_min} in order to touch in." if @balance < @fare_min
     @entry_station = station
     @journeys << {}
-    @journeys.last[:entry_station] = ""
+    @journeys.last[@entry_station] = ""
+    p @journeys
     # unable to get the last journey key to match the station double value
   end
 
