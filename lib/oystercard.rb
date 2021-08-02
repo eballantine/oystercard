@@ -1,5 +1,5 @@
 class Oystercard
-  attr_reader :balance, :card_limit, :fare_min
+  attr_reader :balance, :card_limit, :fare_min, :journeys
   attr_accessor :in_journey
 
   DEFAULT_BALANCE = 0
@@ -11,6 +11,7 @@ class Oystercard
     @card_limit = CARD_LIMIT
     @in_journey = false
     @fare_min = FARE_MIN
+    @journeys = []
   end
 
   def top_up(amount)
@@ -23,9 +24,9 @@ class Oystercard
     @in_journey
   end
 
-  def touch_in
+  def touch_in(station)
     raise "You need a minimum balance of #{@fare_min} in order to touch in." if @balance < @fare_min
-    
+    @journeys << [station]
     @in_journey = true
   end
 

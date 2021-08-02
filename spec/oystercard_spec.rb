@@ -2,8 +2,9 @@ require 'oystercard'
 
 describe Oystercard do
 
+  let(:station) { double('station') }
   let(:top_up_50) { subject.top_up(50) }
-  let(:touch_in) { subject.touch_in }
+  let(:touch_in) { subject.touch_in(station) }
   let(:touch_out) { subject.touch_out }
 
   describe '#initialize' do
@@ -53,6 +54,12 @@ describe Oystercard do
     it "should only let customer touch_in if they have the required." do
       message = "You need a minimum balance of #{subject.fare_min} in order to touch in."
       expect { touch_in }.to raise_error message
+    end
+
+    it 'remembers the entry station after touch in' do
+      top_up_50
+      touch_in
+      expect(subject.journeys).to eq [[station]]
     end
   end
 
