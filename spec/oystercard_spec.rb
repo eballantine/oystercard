@@ -24,7 +24,7 @@ describe Oystercard do
     end
 
     it 'if it would bring oyster balance above limit, raises error' do
-      message = "This brings your balance over the limit of £#{subject.card_limit}."
+      message = "This brings your balance over the limit of £#{subject.balance_limit}."
       expect { subject.top_up(100) }.to raise_error message
     end
   end
@@ -56,7 +56,7 @@ describe Oystercard do
     end
 
     it "should only let customer touch_in if they have the required." do
-      message = "You need a minimum balance of #{subject.fare_min} in order to touch in."
+      message = "A minimum balance of £#{subject.fare_min} required to travel."
       expect { touch_in }.to raise_error message
     end
 
@@ -74,7 +74,7 @@ describe Oystercard do
     it 'saves entry station into journey history' do
       top_up_50
       touch_in
-      expect(subject.journeys.last.keys.first).to eq subject.entry_station
+      expect(subject.journeys.last.values.first).to eq subject.entry_station
     end
   end
 
