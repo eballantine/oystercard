@@ -10,5 +10,11 @@ describe Oystercard do
       starting_balance = subject.balance
       expect(subject.top_up(10)).to eq starting_balance + 10
     end
+
+    it 'if top up would bring oyster balance above limit, raise error' do
+      message = "This brings your balance over the limit of £#{subject.card_limit}."
+      expect { subject.top_up(100) }.to raise_error message
+    end
+
   end
 end
