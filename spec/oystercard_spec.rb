@@ -6,15 +6,21 @@ describe Oystercard do
   end
 
   describe '#top_up' do
-    it 'top_up method tops up card by correct amount' do
+    it 'tops up card by correct amount' do
       starting_balance = subject.balance
       expect(subject.top_up(10)).to eq starting_balance + 10
     end
 
-    it 'if top up would bring oyster balance above limit, raise error' do
+    it 'if it would bring oyster balance above limit, raise error' do
       message = "This brings your balance over the limit of £#{subject.card_limit}."
       expect { subject.top_up(100) }.to raise_error message
     end
+  end
 
+  describe '#deduct' do 
+    it 'reduces balance by correct amount' do
+      subject.top_up(50)
+      expect(subject.deduct(5)).to eq 45
+    end
   end
 end
