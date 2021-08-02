@@ -59,7 +59,7 @@ describe Oystercard do
     it 'remembers the entry station after touch in' do
       top_up_50
       touch_in
-      expect(subject.journeys).to eq [[station]]
+      expect(subject.entry_station).to eq station
     end
   end
 
@@ -75,6 +75,13 @@ describe Oystercard do
       top_up_50
       touch_in
       expect { touch_out }.to change{subject.balance}.by(-1)    
+    end
+
+    it "forgets entry station" do
+      top_up_50
+      touch_in
+      touch_out
+      expect(subject.entry_station).to be nil
     end
   end
 end
