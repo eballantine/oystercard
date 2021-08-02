@@ -27,7 +27,7 @@ describe Oystercard do
   describe '#deduct' do 
     it 'reduces balance by correct amount' do
       top_up_50
-      expect(subject.deduct(5)).to eq 45
+      expect(subject.send(:deduct, 5)).to eq 45
     end
   end
 
@@ -51,7 +51,7 @@ describe Oystercard do
     end
 
     it "should only let customer touch_in if they have the required." do
-      message = "You need a minimum balance of #{subject.balance_min} in order to touch in."
+      message = "You need a minimum balance of #{subject.fare_min} in order to touch in."
       expect { touch_in }.to raise_error message
     end
   end
@@ -62,6 +62,12 @@ describe Oystercard do
       touch_in
       touch_out
       expect(subject.in_journey?).to be false
+    end
+
+    it 'deducts fare minimum from card balance' do
+      top_up_50
+      touch_in
+      expect { touch_out }.to change{subject.balance}.by(-1)    
     end
   end
 end
