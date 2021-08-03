@@ -5,9 +5,9 @@ describe Oystercard do
   let(:station) { double('station') }
   let(:topped_up_50) { subject.top_up(50); subject }
   let(:touch_in) { subject.touch_in(station) }
+  let(:touch_out) { subject.touch_out(station) }
   let(:on_journey) { subject.top_up(50); subject.touch_in(station) }
   let(:completed_journey) { on_journey; subject.touch_out(station) }
-  let(:touch_out) { subject.touch_out(station) }
 
   describe '#initialize' do
     it 'has an initial balance of £0' do
